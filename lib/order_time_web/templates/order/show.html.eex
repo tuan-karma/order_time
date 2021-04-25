@@ -1,0 +1,40 @@
+<h1>Show Order</h1>
+
+<ul>
+
+  <li>
+    <strong>Placing time (at local timezone):</strong>
+    <p id="placing_time"></p>
+  </li>
+
+  <li>
+    <strong>Your Local Timezone: </strong>
+    <p id="localtz"></p>
+  </li>
+
+  <li>
+    <strong>Inserted At (UTC):</strong>
+    <%= @order.inserted_at %>
+  </li>
+
+  <li>
+    <strong>Updated At (unix time):</strong>
+    <%= DateTime.to_unix(@order.updated_at) %>
+    <br>
+    <p>It is the number of seconds that have elapsed since the Unix epoch, minus leap seconds; the Unix epoch is 00:00:00 UTC on 1 January 1970 (an arbitrary date); leap seconds are ignored</p>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.order_path(@conn, :edit, @order) %></span>
+<span><%= link "Back", to: Routes.order_path(@conn, :index) %></span>
+
+<script>
+  var date = new Date();
+  var m_offset = date.getTimezoneOffset();
+  var h_offset = - m_offset / 60.0;
+  document.getElementById("localtz").innerHTML = "Local Timezone: UTC " + h_offset + " hours";
+
+  var plcDate = new Date( 1000.0 * <%= DateTime.to_unix(@order.placing_time) %>);
+  document.getElementById("placing_time").innerHTML = plcDate.toLocaleString();
+</script>
